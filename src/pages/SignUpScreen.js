@@ -1,49 +1,68 @@
 import logo from "../assets/logo.jpeg";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import StyledLink from "../components/StyledLink";
+import InputForm from "../components/InputForm";
+import Loader from "../components/Loader";
 import { useState } from "react";
+import { postSignUp } from "../service/TrackIt";
 
 export default function SignUpScreen() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [name, setName] = useState("");
+	const [photoURL, setPhotoURL] = useState("");
+	const [isDisabled, setIsDisabled] = useState(false);
+
+	function submitUser() {
+		postSignUp({ email, password, name, photoURL })
+			.then((res) => console.log(res.data))
+			.catch((err) => console.log(err.response.data.message));
+	}
+
 	return (
 		<SignUpScreenWrapper>
 			<Logo />
-			<InputCell>
+			<InputForm onSubmit={submitUser} disabled={isDisabled}>
 				<input
-					type="text"
-					required={true}
+					type="email"
+					required
 					placeholder="email"
 					value={email}
+					disabled={isDisabled}
 					onChange={(e) => setEmail(e.target.value)}
 				/>
 
 				<input
 					type="text"
-					required={true}
+					required
 					placeholder="senha"
 					value={password}
+					disabled={isDisabled}
 					onChange={(e) => setPassword(e.target.value)}
 				/>
 
 				<input
 					type="text"
-					required={true}
-					placeholder="senha"
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
+					required
+					placeholder="nome"
+					value={name}
+					disabled={isDisabled}
+					onChange={(e) => setName(e.target.value)}
 				/>
 
 				<input
-					type="text"
-					required={true}
-					placeholder="senha"
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
+					type="url"
+					required
+					placeholder="foto"
+					value={photoURL}
+					disabled={isDisabled}
+					onChange={(e) => setPhotoURL(e.target.value)}
 				/>
-			</InputCell>
-			<SubmitButton>Cadastrar</SubmitButton>
-			<Link style={{ textDecoration: "none" }}>alou</Link>
+
+				<button type="submit">{isDisabled ? <Loader /> : "Cadastrar"}</button>
+			</InputForm>
+
+			<StyledLink to="/">Já tem uma conta? Faça login!</StyledLink>
 		</SignUpScreenWrapper>
 	);
 }
@@ -64,36 +83,4 @@ const Logo = styled.div`
 	background-repeat: no-repeat;
 	margin-top: 70px;
 	margin-bottom: 30px;
-`;
-
-const InputCell = styled.div`
-	display: flex;
-	flex-direction: column;
-	input {
-		width: 303px;
-		height: 45px;
-		font-size: 20px;
-		background-color: transparent;
-		border: 1px solid #d5d5d5;
-		margin-bottom: 6px;
-		padding: 9px 11px;
-		border-radius: 5px;
-	}
-`;
-
-const SubmitButton = styled.button`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 303px;
-	height: 45px;
-	background-color: #52b6ff;
-	border: none;
-	border-radius: 5px;
-	color: white;
-	font-size: 21px;
-	cursor: pointer;
-	font-weight: 700;
-	padding: 8px 0px;
-	margin-bottom: 16px;
 `;

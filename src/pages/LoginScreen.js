@@ -1,43 +1,62 @@
 import logo from "../assets/logo.jpeg";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import StyledLink from "../components/StyledLink";
+import InputForm from "../components/InputForm";
+import Loader from "../components/Loader";
+import { useState } from "react";
 import { postLogin } from "../service/TrackIt";
 
 export default function LoginScreen() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [isDisabled, setIsDisabled] = useState(false);
+
+	function checkCredentials(event) {
+		event.preventDefault();
+
+		const promise = postLogin({ email, password }).then(
+			(res) => {
+				console.log(res.data);
+				setIsDisabled(false);
+			},
+			(err) => {
+				console.log(err.response.data.message);
+				setIsDisabled(false);
+				alert("Usuário e/ou senha inválidos");
+			}
+		);
+
+		setIsDisabled(true);
+	}
 
 	return (
 		<LoginScreenWrapper>
 			<Logo />
-			<InputCell>
+
+			<InputForm onSubmit={checkCredentials} disabled={isDisabled}>
+				<ion-icon name="person-circle-outline"></ion-icon>
 				<input
-					type="text"
-					required={true}
+					type="email"
 					placeholder="email"
+					required
 					value={email}
+					disabled={isDisabled}
 					onChange={(e) => setEmail(e.target.value)}
 				/>
 
 				<input
-					type="text"
-					required={true}
+					type="password"
 					placeholder="senha"
+					required
 					value={password}
+					disabled={isDisabled}
 					onChange={(e) => setPassword(e.target.value)}
 				/>
-			</InputCell>
-			<SubmitButton onClick={() => checkCredentials(email, password)}>Entrar</SubmitButton>
-			<Link style={{ textDecoration: "none" }}>alou</Link>
-		</LoginScreenWrapper>
-	);
-}
 
-function checkCredentials(email, password) {
-	postLogin({ email, password }).then(
-		(res) => (console.log("ameixa"), console.log(res.data)),
-		console.log("beterraba")
+				<button type="submit"> {isDisabled ? <Loader /> : "Entrar"}</button>
+			</InputForm>
+			<StyledLink to="/cadastro">Não tem uma conta? Cadastre-se!</StyledLink>
+		</LoginScreenWrapper>
 	);
 }
 
@@ -47,6 +66,7 @@ const LoginScreenWrapper = styled.div`
 	align-items: center;
 	background-color: #f7f7f7;
 	height: 100vh;
+	width: 100vw;
 `;
 
 const Logo = styled.div`
@@ -57,36 +77,4 @@ const Logo = styled.div`
 	background-repeat: no-repeat;
 	margin-top: 70px;
 	margin-bottom: 30px;
-`;
-
-const InputCell = styled.div`
-	display: flex;
-	flex-direction: column;
-	input {
-		width: 303px;
-		height: 45px;
-		font-size: 20px;
-		background-color: transparent;
-		border: 1px solid #d5d5d5;
-		margin-bottom: 6px;
-		padding: 9px 11px;
-		border-radius: 5px;
-	}
-`;
-
-const SubmitButton = styled.button`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 303px;
-	height: 45px;
-	background-color: #52b6ff;
-	border: none;
-	border-radius: 5px;
-	color: white;
-	font-size: 21px;
-	cursor: pointer;
-	font-weight: 700;
-	padding: 8px 0px;
-	margin-bottom: 16px;
 `;
