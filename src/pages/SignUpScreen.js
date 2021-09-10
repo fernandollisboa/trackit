@@ -1,15 +1,13 @@
 import logo from "../assets/logo.jpeg";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { postLogin } from "../service/TrackIt";
+import { useState } from "react";
 
-export default function LoginScreen() {
+export default function SignUpScreen() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-
 	return (
-		<LoginScreenWrapper>
+		<SignUpScreenWrapper>
 			<Logo />
 			<InputCell>
 				<input
@@ -27,21 +25,30 @@ export default function LoginScreen() {
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
 				/>
+
+				<input
+					type="text"
+					required={true}
+					placeholder="senha"
+					value={password}
+					onChange={(e) => setPassword(e.target.value)}
+				/>
+
+				<input
+					type="text"
+					required={true}
+					placeholder="senha"
+					value={password}
+					onChange={(e) => setPassword(e.target.value)}
+				/>
 			</InputCell>
-			<SubmitButton onClick={() => checkCredentials(email, password)}>Entrar</SubmitButton>
+			<SubmitButton>Cadastrar</SubmitButton>
 			<Link style={{ textDecoration: "none" }}>alou</Link>
-		</LoginScreenWrapper>
+		</SignUpScreenWrapper>
 	);
 }
 
-function checkCredentials(email, password) {
-	postLogin({ email, password }).then(
-		(res) => (console.log("ameixa"), console.log(res.data)),
-		console.log("beterraba")
-	);
-}
-
-const LoginScreenWrapper = styled.div`
+const SignUpScreenWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
