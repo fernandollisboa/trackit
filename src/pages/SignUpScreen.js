@@ -10,13 +10,27 @@ export default function SignUpScreen() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [name, setName] = useState("");
-	const [photoURL, setPhotoURL] = useState("");
+	const [image, setImage] = useState("");
 	const [isDisabled, setIsDisabled] = useState(false);
 
-	function submitUser() {
-		postSignUp({ email, password, name, photoURL })
-			.then((res) => console.log(res.data))
-			.catch((err) => console.log(err.response.data.message));
+	function submitUser(event) {
+		event.preventDefault();
+		postSignUp({ email, name, image, password }).then(
+			(res) => {
+				console.log(res.data);
+				setIsDisabled(false);
+			},
+			(err) => {
+				console.log(err.response.data.message);
+				setIsDisabled(false);
+				const errorMessage =
+					err.response.data.message === 'Campo "body" inválido!'
+						? "E-mail inválido!"
+						: err.response.data.message;
+				alert(errorMessage);
+			}
+		);
+		setIsDisabled(true);
 	}
 
 	return (
@@ -54,9 +68,9 @@ export default function SignUpScreen() {
 					type="url"
 					required
 					placeholder="foto"
-					value={photoURL}
+					value={image}
 					disabled={isDisabled}
-					onChange={(e) => setPhotoURL(e.target.value)}
+					onChange={(e) => setImage(e.target.value)}
 				/>
 
 				<button type="submit">{isDisabled ? <Loader /> : "Cadastrar"}</button>

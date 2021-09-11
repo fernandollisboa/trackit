@@ -14,7 +14,7 @@ export default function LoginScreen() {
 	function checkCredentials(event) {
 		event.preventDefault();
 
-		const promise = postLogin({ email, password }).then(
+		postLogin({ email, password }).then(
 			(res) => {
 				console.log(res.data);
 				setIsDisabled(false);
