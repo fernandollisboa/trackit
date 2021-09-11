@@ -29,6 +29,7 @@ const InputFormLel = styled.form`
 		cursor: pointer;
 		font-weight: 700;
 		padding: 8px 0px;
+		opacity: ${(props) => (props.disabled ? 0.7 : 1)};
 	}
 `;
 
