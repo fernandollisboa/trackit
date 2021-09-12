@@ -1,10 +1,11 @@
-import logo from "../assets/logo.jpeg";
+import logo from "../assets/logo_v1.jpeg";
 import styled from "styled-components";
 import StyledLink from "../components/StyledLink";
 import InputForm from "../components/InputForm";
 import Loader from "../components/Loader";
 import { useState } from "react";
 import { postSignUp } from "../service/TrackIt";
+import { useHistory } from "react-router-dom";
 
 export default function SignUpScreen() {
 	const [email, setEmail] = useState("");
@@ -12,6 +13,7 @@ export default function SignUpScreen() {
 	const [name, setName] = useState("");
 	const [image, setImage] = useState("");
 	const [isDisabled, setIsDisabled] = useState(false);
+	const history = useHistory();
 
 	function submitUser(event) {
 		event.preventDefault();
@@ -19,6 +21,8 @@ export default function SignUpScreen() {
 			(res) => {
 				console.log(res.data);
 				setIsDisabled(false);
+				alert("Conta criada com sucesso!");
+				history.push("/");
 			},
 			(err) => {
 				console.log(err.response.data.message);

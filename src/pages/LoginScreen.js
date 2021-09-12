@@ -1,15 +1,19 @@
-import logo from "../assets/logo.jpeg";
+import logo from "../assets/logo_v1.jpeg";
 import styled from "styled-components";
 import StyledLink from "../components/StyledLink";
 import InputForm from "../components/InputForm";
 import Loader from "../components/Loader";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { postLogin } from "../service/TrackIt";
+import { useHistory } from "react-router-dom";
+import UserContext from "../contexts/UserContext";
 
 export default function LoginScreen() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [isDisabled, setIsDisabled] = useState(false);
+	const history = useHistory();
+	const { setUserAuthData } = useContext(UserContext);
 
 	function checkCredentials(event) {
 		event.preventDefault();
@@ -17,7 +21,12 @@ export default function LoginScreen() {
 		postLogin({ email, password }).then(
 			(res) => {
 				console.log(res.data);
+				const token = res.data.token;
+				const image = res.data.image;
+				const id = res.data.id;
 				setIsDisabled(false);
+				setUserAuthData({ token, image, id });
+				history.push("/habitos", token);
 			},
 			(err) => {
 				console.log(err.response.data.message);
