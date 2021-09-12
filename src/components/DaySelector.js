@@ -1,16 +1,20 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-export default function DaySelector({ text, id, toggleSelection }) {
+export default function DaySelector({ text, id, toggleSelection, controlledInputSelected }) {
 	const [isSelected, setIsSelected] = useState(false);
 
-	function clickHandler() {
+	if (isSelected !== controlledInputSelected) {
+		setIsSelected(controlledInputSelected);
+	}
+
+	function select() {
 		toggleSelection(id, isSelected);
 		setIsSelected(() => !isSelected);
 	}
 
 	return (
-		<DaySelectorWrapper filled={isSelected} onClick={clickHandler}>
+		<DaySelectorWrapper filled={isSelected} onClick={select}>
 			<p>{text}</p>
 		</DaySelectorWrapper>
 	);

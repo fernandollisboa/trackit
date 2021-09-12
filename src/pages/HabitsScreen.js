@@ -12,6 +12,7 @@ import { PageTitle, PageWarningMsg, PageWrapper } from "../components/CommonStyl
 export default function HabitsScreen() {
 	const { userAuthData } = useContext(UserContext);
 	const { token } = userAuthData;
+	const [updated, setUpdated] = useState(0);
 	const [habits, setHabits] = useState([]);
 	const [isDisabled, setIsDisabled] = useState(false);
 	const [newHabitBuilderVisible, setNewHabitBuilderVisible] = useState(false);
@@ -29,7 +30,7 @@ export default function HabitsScreen() {
 					history.push("/");
 				}
 			),
-		[]
+		[updated]
 	);
 
 	return (
@@ -49,6 +50,7 @@ export default function HabitsScreen() {
 					isDisabled={isDisabled}
 					isVisible={newHabitBuilderVisible}
 					closeButton={() => setNewHabitBuilderVisible(false)}
+					update={() => setUpdated(updated + 1)}
 				/>
 
 				{habits.length === 0 && !isDisabled ? (

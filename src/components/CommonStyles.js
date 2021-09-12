@@ -4,7 +4,7 @@ const PageWrapper = styled.div`
 	margin: 70px 0px;
 	background-color: #f7f7f7;
 	width: 100vw;
-	height: 100vh;
+	height: 100%;
 	padding: 28px 18px;
 	font-family: "Lexand Deca", sans-serif;
 `;

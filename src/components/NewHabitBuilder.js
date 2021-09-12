@@ -4,7 +4,7 @@ import DaySelector from "./DaySelector";
 import { postNewHabit } from "../service/TrackIt";
 import UserContext from "../contexts/UserContext";
 
-export default function NewHabitBuilder({ isDisabled, isVisible, closeButton }) {
+export default function NewHabitBuilder({ isDisabled, isVisible, closeButton, update }) {
 	const [habitData, setHabitData] = useState({ name: "", days: [] });
 	const { userAuthData } = useContext(UserContext);
 	const { token } = userAuthData;
@@ -23,13 +23,9 @@ export default function NewHabitBuilder({ isDisabled, isVisible, closeButton }) 
 
 		if (!wasSelected) {
 			newDaysData = [...habitData.days, thisDay];
-			console.log("add" + thisDay);
 		} else {
 			newDaysData = habitData.days.filter((value) => value !== thisDay);
-			console.log("rem" + thisDay);
 		}
-
-		console.log(newDaysData);
 
 		setHabitData({
 			name: habitData.name,
@@ -41,8 +37,13 @@ export default function NewHabitBuilder({ isDisabled, isVisible, closeButton }) 
 		if (isCorrectlyFilled()) {
 			console.log({ habitData });
 			postNewHabit(habitData, token).then(
-				(res) => console.log(res.data),
-				(err) => err.response.data
+				(res) => {
+					alert("Hábito criado com sucesso!");
+					setHabitData({ name: "", days: [] });
+					closeButton();
+					update();
+				},
+				(err) => alert("Erro ao criar hábito!")
 			);
 		}
 	}
@@ -82,6 +83,7 @@ export default function NewHabitBuilder({ isDisabled, isVisible, closeButton }) 
 						text={day.name}
 						id={day.number}
 						toggleSelection={toggleDaySelection}
+						controlledInputSelected={habitData.days.includes(day.number)}
 					/>
 				))}
 			</DaysInput>

@@ -28,6 +28,7 @@ const TopBarWrapper = styled.div`
 	height: 70px;
 	width: 100vw;
 	padding: 10px 18px;
+	z-index: 1;
 `;
 
 const Logo = styled.div`
