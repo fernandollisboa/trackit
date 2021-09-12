@@ -26,7 +26,8 @@ export default function LoginScreen() {
 				const id = res.data.id;
 				setIsDisabled(false);
 				setUserAuthData({ token, image, id });
-				history.push("/habitos", token);
+				// alert(`Bem vindo!`);
+				history.push("/habitos");
 			},
 			(err) => {
 				console.log(err.response.data.message);
@@ -43,7 +44,6 @@ export default function LoginScreen() {
 			<Logo />
 
 			<InputForm onSubmit={checkCredentials} disabled={isDisabled}>
-				<ion-icon name="person-circle-outline"></ion-icon>
 				<input
 					type="email"
 					placeholder="email"

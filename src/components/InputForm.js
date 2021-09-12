@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const InputFormLel = styled.form`
+const InputForm = styled.form`
 	display: flex;
 	flex-direction: column;
 	margin-bottom: 25px;
@@ -32,7 +32,5 @@ const InputFormLel = styled.form`
 		opacity: ${(props) => (props.disabled ? 0.7 : 1)};
 	}
 `;
-
-const InputForm = InputFormLel;
 
 export default InputForm;

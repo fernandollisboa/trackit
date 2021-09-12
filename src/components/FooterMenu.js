@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import styled from "styled-components";
 import StyledLink from "./StyledLink";
 import TodayProgressBar from "./TodayProgressBar";
@@ -6,14 +5,14 @@ import TodayProgressBar from "./TodayProgressBar";
 export default function FooterMenu() {
 	return (
 		<FooterMenuWrapper>
-			<TodayLink>
+			<TodayLink to="/hoje">
 				<TodayProgressBar />
 			</TodayLink>
 
 			<BottomBar>
-				<Habits to="/habits">Hábitos</Habits>
+				<CustomLink to="/habitos">Hábitos</CustomLink>
 
-				<History to="/historico">Histórico</History>
+				<CustomLink to="/historico">Histórico</CustomLink>
 			</BottomBar>
 		</FooterMenuWrapper>
 	);
@@ -23,6 +22,7 @@ const FooterMenuWrapper = styled.div`
 	display: flex;
 	position: fixed;
 	justify-content: center;
+	align-items: center;
 	width: 100vw;
 	bottom: 3%;
 `;
@@ -30,6 +30,7 @@ const FooterMenuWrapper = styled.div`
 const BottomBar = styled.div`
 	display: flex;
 	justify-content: space-between;
+	background-color: white;
 	padding: 22px 36px;
 	font-size: 17px;
 	font-weight: 700;
@@ -42,11 +43,7 @@ const BottomBar = styled.div`
 	right: 0;
 `;
 
-const Habits = styled(StyledLink)`
-	text-decoration: none;
-`;
-
-const History = styled(StyledLink)`
+const CustomLink = styled(StyledLink)`
 	text-decoration: none;
 `;
 
