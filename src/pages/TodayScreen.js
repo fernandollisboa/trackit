@@ -23,7 +23,6 @@ export default function TodayScreen() {
 			getTodayHabits(token).then(
 				(res) => {
 					setTodaysHabits([...res.data]);
-
 					if (todaysHabits.length > 0) {
 						setPercentHabitsCompleted(
 							res.data.filter((habit) => habit.done).length / res.data.length
@@ -83,7 +82,6 @@ export default function TodayScreen() {
 }
 
 const SectionSubTitle = styled.p`
-	font-family: "Lexend Deca", sans-serif;
 	font-size: 18px;
 	color: ${(props) => props.color || "#bababa"};
 	margin-bottom: 20px;

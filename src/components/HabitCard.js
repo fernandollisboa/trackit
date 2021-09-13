@@ -14,7 +14,7 @@ export default function HabitCard({ key, name, days, removeHabit }) {
 		<HabitCardWrapper>
 			<HabitTitle>
 				{name}
-				<ion-icon name="trash" onClick={removeHabit}></ion-icon>
+				<ion-icon name="trash" onClick={() => removeHabit(key)}></ion-icon>
 			</HabitTitle>
 
 			<WeekContainer>

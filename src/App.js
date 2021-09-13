@@ -20,7 +20,7 @@ export default function App() {
 
 			<Switch>
 				<Route exact path="/">
-					<UserContext.Provider value={{ setUserAuthData, setPercentHabitsCompleted }}>
+					<UserContext.Provider value={{ setUserAuthData, percentHabitsCompleted }}>
 						<LoginScreen />
 					</UserContext.Provider>
 				</Route>
@@ -30,7 +30,9 @@ export default function App() {
 				</Route>
 
 				<Route exact path="/habitos">
-					<UserContext.Provider value={{ userAuthData, percentHabitsCompleted }}>
+					<UserContext.Provider
+						value={{ userAuthData, percentHabitsCompleted, setPercentHabitsCompleted }}
+					>
 						<HabitsScreen />
 					</UserContext.Provider>
 				</Route>

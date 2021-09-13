@@ -6,7 +6,6 @@ import { useContext } from "react";
 
 export default function FooterMenu() {
 	const { percentHabitsCompleted } = useContext(UserContext);
-
 	return (
 		<FooterMenuWrapper>
 			<TodayLink to="/hoje">

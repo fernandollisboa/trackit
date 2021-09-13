@@ -27,7 +27,6 @@ function postNewHabit(body, token) {
 }
 
 function deleteHabit(habitData, token) {
-	console.log(habitData);
 	const promise = axios.delete(`${BASE_URL}/habits/${habitData.id}`, getBearerTokenHeader(token), {
 		data: { habitData },
 	});

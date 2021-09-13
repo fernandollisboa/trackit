@@ -20,14 +20,12 @@ export default function LoginScreen() {
 
 		postLogin({ email, password }).then(
 			(res) => {
-				console.log(res.data);
 				const token = res.data.token;
 				const image = res.data.image;
 				const id = res.data.id;
 				setIsDisabled(false);
 				setUserAuthData({ token, image, id });
-				// alert(`Bem vindo!`);
-				createHabitsPercentage(token);
+				alert(`Bem vindo!`);
 				history.push("/habitos");
 			},
 			(err) => {
@@ -38,14 +36,6 @@ export default function LoginScreen() {
 		);
 
 		setIsDisabled(true);
-	}
-
-	function createHabitsPercentage(token) {
-		getTodayHabits(token).then((res) => {
-			if (res.data.length > 0) {
-				setPercentHabitsCompleted(res.data.filter((habit) => habit.done).length / res.data.length);
-			}
-		});
 	}
 
 	return (

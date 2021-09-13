@@ -42,7 +42,6 @@ export default function NewHabitBuilder({
 
 	function submitHabit() {
 		if (isCorrectlyFilled()) {
-			console.log({ habitData });
 			postNewHabit(habitData, token).then(
 				(res) => {
 					alert("Hábito criado com sucesso!");

@@ -4,13 +4,13 @@ import FooterMenu from "../components/FooterMenu";
 import TopBar from "../components/TopBar";
 import UserContext from "../contexts/UserContext";
 import styled from "styled-components";
-import { deleteHabit, getHabits } from "../service/TrackIt";
+import { deleteHabit, getHabits, getTodayHabits } from "../service/TrackIt";
 import NewHabitBuilder from "../components/NewHabitBuilder";
 import HabitCard from "../components/HabitCard";
 import { PageTitle, PageWarningMsg, PageWrapper } from "../components/CommonStyles";
 
 export default function HabitsScreen() {
-	const { userAuthData } = useContext(UserContext);
+	const { userAuthData, setPercentHabitsCompleted } = useContext(UserContext);
 	const { token } = userAuthData;
 	const [updated, setUpdated] = useState(0);
 	const [habits, setHabits] = useState([]);
@@ -22,7 +22,8 @@ export default function HabitsScreen() {
 		() =>
 			getHabits(token).then(
 				(res) => {
-					setHabits(res.data);
+					setHabits([...res.data]);
+					updateHabitsPercentage();
 					setIsDisabled(false);
 				},
 				() => {
@@ -30,11 +31,20 @@ export default function HabitsScreen() {
 					history.push("/");
 				}
 			),
-		[updated]
+		[update]
 	);
 
 	function update() {
-		setUpdated(updated + 1);
+		setUpdated(() => updated + 1);
+		updateHabitsPercentage();
+	}
+
+	function updateHabitsPercentage() {
+		getTodayHabits(token).then((res) => {
+			if (res.data.length > 0) {
+				setPercentHabitsCompleted(res.data.filter((habit) => habit.done).length / res.data.length);
+			}
+		});
 	}
 
 	function removeHabit(key) {
