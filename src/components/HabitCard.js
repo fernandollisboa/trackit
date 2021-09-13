@@ -1,5 +1,5 @@
 import styled from "styled-components";
-export default function HabitCard({ name, days }) {
+export default function HabitCard({ key, name, days, removeHabit }) {
 	const daysRef = [
 		{ name: "D", number: 7 },
 		{ name: "S", number: 1 },
@@ -10,15 +10,11 @@ export default function HabitCard({ name, days }) {
 		{ name: "S", number: 6 },
 	];
 
-	function belengodento() {
-		console.log("excluir");
-	}
-
 	return (
 		<HabitCardWrapper>
 			<HabitTitle>
 				{name}
-				<ion-icon name="trash" onClick={belengodento}></ion-icon>
+				<ion-icon name="trash" onClick={removeHabit}></ion-icon>
 			</HabitTitle>
 
 			<WeekContainer>
@@ -52,7 +48,7 @@ const HabitTitle = styled.h1`
 	color: #666666;
 	display: flex;
 	justify-content: space-between;
-	margin-bottom: 5px;
+	margin-bottom: 10px;
 `;
 
 const Day = styled.div`

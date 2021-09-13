@@ -4,7 +4,7 @@ import FooterMenu from "../components/FooterMenu";
 import TopBar from "../components/TopBar";
 import UserContext from "../contexts/UserContext";
 import styled from "styled-components";
-import { getHabits } from "../service/TrackIt";
+import { deleteHabit, getHabits } from "../service/TrackIt";
 import NewHabitBuilder from "../components/NewHabitBuilder";
 import HabitCard from "../components/HabitCard";
 import { PageTitle, PageWarningMsg, PageWrapper } from "../components/CommonStyles";
@@ -14,7 +14,7 @@ export default function HabitsScreen() {
 	const { token } = userAuthData;
 	const [updated, setUpdated] = useState(0);
 	const [habits, setHabits] = useState([]);
-	const [isDisabled, setIsDisabled] = useState(false);
+	const [isDisabled, setIsDisabled] = useState(true);
 	const [newHabitBuilderVisible, setNewHabitBuilderVisible] = useState(false);
 	const history = useHistory();
 
@@ -33,6 +33,19 @@ export default function HabitsScreen() {
 		[updated]
 	);
 
+	function update() {
+		setUpdated(updated + 1);
+	}
+
+	function removeHabit(key) {
+		const isConfirmed = window.confirm("Você tem certeza que quer excluir esse hábito?");
+
+		if (isConfirmed) {
+			const habitData = habits.find((h) => h.id === key);
+			deleteHabit(habitData, token).then(update(), (err) => console.log(err.response.data.message));
+		}
+	}
+
 	return (
 		<>
 			<TopBar />
@@ -48,9 +61,10 @@ export default function HabitsScreen() {
 
 				<NewHabitBuilder
 					isDisabled={isDisabled}
+					setIsDisabled={setIsDisabled}
 					isVisible={newHabitBuilderVisible}
 					closeButton={() => setNewHabitBuilderVisible(false)}
-					update={() => setUpdated(updated + 1)}
+					update={update}
 				/>
 
 				{habits.length === 0 && !isDisabled ? (
@@ -60,7 +74,14 @@ export default function HabitsScreen() {
 					</PageWarningMsg>
 				) : (
 					habits.map((habit) => {
-						return <HabitCard key={habit.id} name={habit.name} days={habit.days} />;
+						return (
+							<HabitCard
+								key={habit.id}
+								name={habit.name}
+								days={habit.days}
+								removeHabit={() => removeHabit(habit.id)}
+							/>
+						);
 					})
 				)}
 			</PageWrapper>

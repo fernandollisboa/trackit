@@ -1,12 +1,16 @@
 import styled from "styled-components";
 import StyledLink from "./StyledLink";
 import TodayProgressBar from "./TodayProgressBar";
+import UserContext from "../contexts/UserContext";
+import { useContext } from "react";
 
 export default function FooterMenu() {
+	const { percentHabitsCompleted } = useContext(UserContext);
+
 	return (
 		<FooterMenuWrapper>
 			<TodayLink to="/hoje">
-				<TodayProgressBar />
+				<TodayProgressBar percentage={percentHabitsCompleted} />
 			</TodayLink>
 
 			<BottomBar>

@@ -1,7 +1,13 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-export default function DaySelector({ text, id, toggleSelection, controlledInputSelected }) {
+export default function DaySelector({
+	text,
+	id,
+	toggleSelection,
+	controlledInputSelected,
+	disabled,
+}) {
 	const [isSelected, setIsSelected] = useState(false);
 
 	if (isSelected !== controlledInputSelected) {
@@ -14,13 +20,13 @@ export default function DaySelector({ text, id, toggleSelection, controlledInput
 	}
 
 	return (
-		<DaySelectorWrapper filled={isSelected} onClick={select}>
+		<DaySelectorWrapper filled={isSelected} onClick={select} disabled={disabled}>
 			<p>{text}</p>
 		</DaySelectorWrapper>
 	);
 }
 
-const DaySelectorWrapper = styled.div`
+const DaySelectorWrapper = styled.button`
 	background-color: ${(props) => (props.filled ? "#dbdbdb" : "#fff")};
 	color: ${(props) => (props.filled ? "#fff" : "#dbdbdb")};
 	border-radius: 5px;

@@ -1,12 +1,10 @@
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
-const percentage = 75;
-
-export default function TodayProgressBar() {
+export default function TodayProgressBar({ percentage }) {
 	return (
 		<CircularProgressbar
-			value={percentage}
+			value={percentage * 100}
 			text="Hoje"
 			styles={buildStyles({
 				textSize: "25px",

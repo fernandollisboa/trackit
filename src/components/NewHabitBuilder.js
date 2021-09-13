@@ -3,8 +3,15 @@ import { useState, useContext } from "react";
 import DaySelector from "./DaySelector";
 import { postNewHabit } from "../service/TrackIt";
 import UserContext from "../contexts/UserContext";
+import Loader from "./Loader";
 
-export default function NewHabitBuilder({ isDisabled, isVisible, closeButton, update }) {
+export default function NewHabitBuilder({
+	isDisabled,
+	setIsDisabled,
+	isVisible,
+	closeButton,
+	update,
+}) {
 	const [habitData, setHabitData] = useState({ name: "", days: [] });
 	const { userAuthData } = useContext(UserContext);
 	const { token } = userAuthData;
@@ -41,10 +48,18 @@ export default function NewHabitBuilder({ isDisabled, isVisible, closeButton, up
 					alert("Hábito criado com sucesso!");
 					setHabitData({ name: "", days: [] });
 					closeButton();
+					setIsDisabled(false);
 					update();
 				},
-				(err) => alert("Erro ao criar hábito!")
+				(err) => {
+					alert("Erro ao criar hábito!");
+					setHabitData({ name: "", days: [] });
+					closeButton();
+					setIsDisabled(false);
+					update();
+				}
 			);
+			setIsDisabled(true);
 		}
 	}
 
@@ -68,6 +83,7 @@ export default function NewHabitBuilder({ isDisabled, isVisible, closeButton, up
 				placeholder="nome do hábito"
 				value={habitData.name}
 				required
+				disabled={isDisabled}
 				onChange={(e) =>
 					setHabitData({
 						name: e.target.value,
@@ -83,14 +99,20 @@ export default function NewHabitBuilder({ isDisabled, isVisible, closeButton, up
 						text={day.name}
 						id={day.number}
 						toggleSelection={toggleDaySelection}
+						disabled={isDisabled}
 						controlledInputSelected={habitData.days.includes(day.number)}
 					/>
 				))}
 			</DaysInput>
 
 			<ButtonsContainer isVisible={isVisible}>
-				<CancelButton onClick={closeButton}>Cancelar</CancelButton>
-				<SendButton onClick={submitHabit}>Enviar</SendButton>
+				<CancelButton onClick={closeButton} disabled={isDisabled}>
+					Cancelar
+				</CancelButton>
+
+				<SendButton onClick={submitHabit} disabled={isDisabled}>
+					{isDisabled ? <Loader /> : "Enviar"}
+				</SendButton>
 			</ButtonsContainer>
 		</NewHabitBuilderWrapper>
 	);
@@ -143,6 +165,9 @@ const CancelButton = styled.button`
 `;
 
 const SendButton = styled.button`
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	color: white;
 	background-color: #52b6ff;
 	font-size: 16px;

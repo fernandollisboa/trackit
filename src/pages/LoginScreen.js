@@ -4,7 +4,7 @@ import StyledLink from "../components/StyledLink";
 import InputForm from "../components/InputForm";
 import Loader from "../components/Loader";
 import { useState, useContext } from "react";
-import { postLogin } from "../service/TrackIt";
+import { postLogin, getTodayHabits } from "../service/TrackIt";
 import { useHistory } from "react-router-dom";
 import UserContext from "../contexts/UserContext";
 
@@ -13,7 +13,7 @@ export default function LoginScreen() {
 	const [password, setPassword] = useState("");
 	const [isDisabled, setIsDisabled] = useState(false);
 	const history = useHistory();
-	const { setUserAuthData } = useContext(UserContext);
+	const { setUserAuthData, setPercentHabitsCompleted } = useContext(UserContext);
 
 	function checkCredentials(event) {
 		event.preventDefault();
@@ -27,6 +27,7 @@ export default function LoginScreen() {
 				setIsDisabled(false);
 				setUserAuthData({ token, image, id });
 				// alert(`Bem vindo!`);
+				createHabitsPercentage(token);
 				history.push("/habitos");
 			},
 			(err) => {
@@ -37,6 +38,14 @@ export default function LoginScreen() {
 		);
 
 		setIsDisabled(true);
+	}
+
+	function createHabitsPercentage(token) {
+		getTodayHabits(token).then((res) => {
+			if (res.data.length > 0) {
+				setPercentHabitsCompleted(res.data.filter((habit) => habit.done).length / res.data.length);
+			}
+		});
 	}
 
 	return (
@@ -62,7 +71,9 @@ export default function LoginScreen() {
 					onChange={(e) => setPassword(e.target.value)}
 				/>
 
-				<button type="submit"> {isDisabled ? <Loader /> : "Entrar"}</button>
+				<button type="submit" disabled={isDisabled}>
+					{isDisabled ? <Loader /> : "Entrar"}
+				</button>
 			</InputForm>
 			<StyledLink to="/cadastro">Não tem uma conta? Cadastre-se!</StyledLink>
 		</LoginScreenWrapper>

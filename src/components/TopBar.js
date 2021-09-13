@@ -5,13 +5,10 @@ import logo from "../assets/logo_v2.png";
 
 export default function TopBar() {
 	const { userAuthData } = useContext(UserContext);
-	const photoURL =
-		"https://s2.glbimg.com/iaiGJEJUPLm9Gk-61vLiuMMoGf8=/0x0:1468x974/924x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_bc8228b6673f488aa253bbcb03c80ec5/internal_photos/bs/2018/P/c/c2ICdQSnWZ2mS5RZf0ug/captura-de-tela-2018-08-05-as-7.19.35-am.png";
-
-	console.log(userAuthData.image);
+	const { image } = userAuthData;
 	return (
 		<TopBarWrapper>
-			<Logo /> <UserImg image={photoURL} />
+			<Logo /> <UserImg image={image} />
 		</TopBarWrapper>
 	);
 }
